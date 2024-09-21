@@ -857,11 +857,14 @@ extension SwipeView {
 
         /// Set the current side.
         if currentSide == nil {
-            let dx = value.location.x - value.startLocation.x
+            var dx = value.location.x - value.startLocation.x
+            if layoutDirection == .rightToLeft {
+                dx = value.startLocation.x - value.location.x
+            }
             if dx > 0 {
-                currentSide = layoutDirection == .leftToRight ? .leading : .trailing
+                currentSide = .leading
             } else {
-                currentSide = layoutDirection == .leftToRight ? .trailing : .leading
+                currentSide = .trailing
             }
 
             /// The gesture just started, so animate the change (in case `swipeMinimumDistance > 0`).
@@ -875,7 +878,7 @@ extension SwipeView {
 
     func change(value: DragGesture.Value) {
         /// The total offset of the swipe view.
-        let totalOffset = savedOffset + value.translation.width
+        let totalOffset = savedOffset + value.translation.width * (layoutDirection == .rightToLeft ? -1 : 1)
 
         /// Get the disallowed side if it exists.
         let disallowedSide = getDisallowedSide(totalOffset: totalOffset)
