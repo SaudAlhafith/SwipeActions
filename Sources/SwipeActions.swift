@@ -947,8 +947,8 @@ extension SwipeView {
 
     /// Represents the end of a gesture.
     func end(value: DragGesture.Value, velocity: CGFloat) {
-        let totalOffset = savedOffset + value.translation.width * (layoutDirection == .rightToLeft ? -1 : 1)
-        let totalPredictedOffset = (savedOffset + value.predictedEndTranslation.width * (layoutDirection == .rightToLeft ? -1 : 1)) * 0.5
+        let totalOffset = savedOffset + value.translation.width
+        let totalPredictedOffset = savedOffset + value.predictedEndTranslation.width * 0.5
 
         if getDisallowedSide(totalOffset: totalPredictedOffset) != nil {
             currentSide = nil
@@ -965,10 +965,10 @@ extension SwipeView {
             leadingState = .triggered
             trigger(side: .leading, velocity: velocity)
         } else {
-            if totalPredictedOffset > leadingReadyToExpandOffset, numberOfLeadingActions > 0 {
+            if totalPredictedOffset > leadingReadyToExpandOffset * (layoutDirection == .rightToLeft ? -1 : 1), numberOfLeadingActions > 0 {
                 leadingState = .expanded
                 expand(side: .leading, velocity: velocity)
-            } else if totalPredictedOffset < trailingReadyToExpandOffset, numberOfTrailingActions > 0 {
+            } else if totalPredictedOffset < trailingReadyToExpandOffset * (layoutDirection == .rightToLeft ? -1 : 1), numberOfTrailingActions > 0 {
                 trailingState = .expanded
                 expand(side: .trailing, velocity: velocity)
             } else {
