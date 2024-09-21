@@ -754,12 +754,12 @@ extension SwipeView {
 
     var trailingExpandedOffset: Double {
         let expandedOffset = -(actionsWidth(numberOfActions: numberOfTrailingActions) + options.spacing)
-        return expandedOffset
+        return expandedOffset * (layoutDirection == .rightToLeft ? -1 : 1)
     }
 
     var trailingReadyToTriggerOffset: Double {
-        var readyToTriggerOffset = trailingExpandedOffset - options.readyToTriggerPadding
-        let minimumOffsetToTrigger = -options.minimumPointToTrigger /// Sometimes if there's only one action, the trigger drag distance is too small. This makes sure it's big enough.
+        var readyToTriggerOffset = trailingExpandedOffset - options.readyToTriggerPadding * (layoutDirection == .rightToLeft ? -1 : 1)
+        let minimumOffsetToTrigger = -options.minimumPointToTrigger * (layoutDirection == .rightToLeft ? -1 : 1)/// Sometimes if there's only one action, the trigger drag distance is too small. This makes sure it's big enough.
         if readyToTriggerOffset > minimumOffsetToTrigger {
             readyToTriggerOffset = minimumOffsetToTrigger
         }
@@ -779,12 +779,12 @@ extension SwipeView {
 
     var leadingExpandedOffset: Double {
         let expandedOffset = actionsWidth(numberOfActions: numberOfLeadingActions) + options.spacing
-        return expandedOffset
+        return expandedOffset * (layoutDirection == .rightToLeft ? -1 : 1)
     }
 
     var leadingReadyToTriggerOffset: Double {
-        var readyToTriggerOffset = leadingExpandedOffset + options.readyToTriggerPadding
-        let minimumOffsetToTrigger = options.minimumPointToTrigger
+        var readyToTriggerOffset = leadingExpandedOffset + options.readyToTriggerPadding * (layoutDirection == .rightToLeft ? -1 : 1)
+        let minimumOffsetToTrigger = options.minimumPointToTrigger * (layoutDirection == .rightToLeft ? -1 : 1)
 
         if readyToTriggerOffset < minimumOffsetToTrigger {
             readyToTriggerOffset = minimumOffsetToTrigger
@@ -827,9 +827,9 @@ extension SwipeView {
         withAnimation(.interpolatingSpring(stiffness: options.offsetTriggerAnimationStiffness, damping: options.offsetTriggerAnimationDamping, initialVelocity: velocity)) {
             switch side {
             case .leading:
-                savedOffset = leadingTriggeredOffset
+                savedOffset = layoutDirection == .rightToLeft ? trailingExpandedOffset : leadingExpandedOffset
             case .trailing:
-                savedOffset = trailingTriggeredOffset
+                savedOffset = layoutDirection == .rightToLeft ? leadingExpandedOffset : trailingExpandedOffset
             }
             currentOffset = 0
         }
