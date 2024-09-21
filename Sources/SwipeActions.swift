@@ -732,12 +732,12 @@ extension SwipeView {
         if let currentSide {
             switch currentSide {
             case .leading:
-                if totalOffset < 0 {
+                if totalOffset * (layoutDirection == .rightToLeft ? -1 : 1) < 0 {
                     /// Disallow showing trailing actions.
                     return .trailing
                 }
             case .trailing:
-                if totalOffset > 0 {
+                if totalOffset * (layoutDirection == .rightToLeft ? -1 : 1) > 0 {
                     /// Disallow showing leading actions.
                     return .leading
                 }
