@@ -901,7 +901,7 @@ extension SwipeView {
             if totalOffset > leadingReadyToTriggerOffset {
                 setCurrentOffset = true
                 if swipeToTriggerLeadingEdge {
-                    currentOffset = value.translation.width
+                    currentOffset = value.translation.width * (layoutDirection == .rightToLeft ? -1 : 1)
                     leadingState = .triggering
                     trailingState = nil
                 } else {
@@ -917,7 +917,7 @@ extension SwipeView {
             if totalOffset < trailingReadyToTriggerOffset {
                 setCurrentOffset = true
                 if swipeToTriggerTrailingEdge {
-                    currentOffset = value.translation.width
+                    currentOffset = value.translation.width * (layoutDirection == .rightToLeft ? -1 : 1)
                     trailingState = .triggering
                     leadingState = nil
                 } else {
@@ -932,7 +932,7 @@ extension SwipeView {
 
             /// If the offset wasn't modified already (due to rubber banding), use `value.translation.width` as the default.
             if !setCurrentOffset {
-                currentOffset = value.translation.width
+                currentOffset = value.translation.width * (layoutDirection == .rightToLeft ? -1 : 1)
                 leadingState = nil
                 trailingState = nil
             }
