@@ -965,10 +965,10 @@ extension SwipeView {
             leadingState = .triggered
             trigger(side: .leading, velocity: velocity)
         } else {
-            if totalPredictedOffset > leadingReadyToExpandOffset * (layoutDirection == .rightToLeft ? -1 : 1), numberOfLeadingActions > 0 {
+            if totalPredictedOffset > leadingReadyToExpandOffset , numberOfLeadingActions > 0 {
                 leadingState = .expanded
                 expand(side: .leading, velocity: velocity)
-            } else if totalPredictedOffset < trailingReadyToExpandOffset * (layoutDirection == .rightToLeft ? -1 : 1), numberOfTrailingActions > 0 {
+            } else if totalPredictedOffset < trailingReadyToExpandOffset, numberOfTrailingActions > 0 {
                 trailingState = .expanded
                 expand(side: .trailing, velocity: velocity)
             } else {
