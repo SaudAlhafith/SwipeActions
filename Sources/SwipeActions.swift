@@ -346,6 +346,8 @@ public struct SwipeView<Label, LeadingActions, TrailingActions>: View where Labe
 
     /// Read the `swipeViewGroupSelection` from the parent `SwipeViewGroup` (if it exists).
     @Environment(\.swipeViewGroupSelection) var swipeViewGroupSelection
+    /// Read the layoutdirectoin
+    @Environment(\.layoutDirection) var layoutDirection
 
     // MARK: - Internal state
 
@@ -857,9 +859,9 @@ extension SwipeView {
         if currentSide == nil {
             let dx = value.location.x - value.startLocation.x
             if dx > 0 {
-                currentSide = .leading
+                currentSide = layoutDirection == .leftToRight ? .leading : .trailing
             } else {
-                currentSide = .trailing
+                currentSide = layoutDirection == .leftToRight ? .trailing : .leading
             }
 
             /// The gesture just started, so animate the change (in case `swipeMinimumDistance > 0`).
